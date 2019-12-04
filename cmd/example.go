@@ -11,7 +11,7 @@ func main() {
 	s := scheduler.New()
 
 	// Schedule a job to run every minute
-	s.Schedule(
+	j1 := s.Schedule(
 		func() {
 			log.Println("Every minute job")
 		},
@@ -23,10 +23,11 @@ func main() {
 			Weekday: scheduler.EveryWeekday,
 		},
 	)
+	log.Printf("Added first job with id %d", j1)
 
 	// Schedule a job to run once (1min after execution)
 	nextMoment := time.Now().Add(1 * time.Minute)
-	s.Schedule(
+	j2 := s.Schedule(
 		func() {
 			log.Println("Single execution job")
 		},
@@ -38,6 +39,7 @@ func main() {
 			Weekday: nextMoment.Weekday(),
 		},
 	)
+	log.Printf("Added second job with id %d", j2)
 
 	// Running scheduler
 	s.Run()

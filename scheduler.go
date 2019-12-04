@@ -1,15 +1,19 @@
 package scheduler
 
 import (
+	"sync"
 	"time"
 )
 
 // Scheduler contains a list of
 // scheduled jobs
 type Scheduler struct {
-	jobs    []scheduledJob
 	timer   *time.Timer
 	running bool
+
+	jobsMu sync.Mutex
+	jobs   map[ScheduledJobID]scheduledJob
+	nextID ScheduledJobID
 }
 
 // Job is the unit of work
@@ -34,6 +38,11 @@ type CronRule struct {
 	Weekday time.Weekday
 }
 
+// ScheduledJobID is an ID provided to each
+// job that is scheduled, it is used to remove
+// it from the scheduler if needed
+type ScheduledJobID int64
+
 type scheduledJob struct {
 	job  Job
 	rule CronRule
@@ -42,16 +51,21 @@ type scheduledJob struct {
 // New creates a new scheduler
 func New() Scheduler {
 	return Scheduler{
-		jobs: []scheduledJob{},
+		jobs: map[ScheduledJobID]scheduledJob{},
 	}
 }
 
 // Schedule schedules j for execution
-func (s *Scheduler) Schedule(j Job, r CronRule) {
-	s.jobs = append(s.jobs, scheduledJob{
+func (s *Scheduler) Schedule(j Job, r CronRule) ScheduledJobID {
+	s.jobsMu.Lock()
+	jobID := s.nextID
+	s.jobs[jobID] = scheduledJob{
 		job:  j,
 		rule: r,
-	})
+	}
+	s.nextID++
+	s.jobsMu.Unlock()
+	return jobID
 }
 
 // Run starts the scheduler
