@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/Giulianos/scheduler"
@@ -13,11 +13,11 @@ func main() {
 	// Schedule a job to run every minute
 	s.Schedule(
 		func() {
-			fmt.Println("Every minute job")
+			log.Println("Every minute job")
 		},
 		scheduler.CronRule{
 			Minute:  -1,
-			Hour:    14,
+			Hour:    -1,
 			Day:     -1,
 			Month:   -1,
 			Weekday: -1,
@@ -28,7 +28,7 @@ func main() {
 	nextMoment := time.Now().Add(1 * time.Minute)
 	s.Schedule(
 		func() {
-			fmt.Println("Single execution job")
+			log.Println("Single execution job")
 		},
 		scheduler.CronRule{
 			Minute:  nextMoment.Minute(),

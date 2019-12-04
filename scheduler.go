@@ -58,7 +58,7 @@ func (s *Scheduler) Stop() {
 }
 
 func (s Scheduler) nextJobTime() time.Time {
-	return time.Now().Add(time.Minute)
+	return time.Now().Add(time.Minute).Truncate(time.Minute)
 }
 
 func (r CronRule) isNow() bool {
