@@ -16,6 +16,14 @@ type Scheduler struct {
 // that can be scheduled
 type Job func()
 
+const (
+	EveryMinute  int          = -1
+	EveryHour    int          = -1
+	EveryDay     int          = -1
+	EveryMonth   time.Month   = -1
+	EveryWeekday time.Weekday = -1
+)
+
 // CronRule is a rule
 // that defines when a job is executed
 type CronRule struct {
@@ -63,19 +71,19 @@ func (s Scheduler) nextJobTime() time.Time {
 
 func (r CronRule) isNow() bool {
 	n := time.Now()
-	if r.Minute > 0 && r.Minute != n.Minute() {
+	if r.Minute >= 0 && r.Minute != n.Minute() {
 		return false
 	}
-	if r.Hour > 0 && r.Hour != n.Hour() {
+	if r.Hour >= 0 && r.Hour != n.Hour() {
 		return false
 	}
-	if r.Day > 0 && r.Day != n.Day() {
+	if r.Day >= 0 && r.Day != n.Day() {
 		return false
 	}
-	if r.Month > 0 && r.Month != n.Month() {
+	if r.Month >= 0 && r.Month != n.Month() {
 		return false
 	}
-	if r.Weekday > 0 && r.Weekday != n.Weekday() {
+	if r.Weekday >= 0 && r.Weekday != n.Weekday() {
 		return false
 	}
 	return true

@@ -16,11 +16,11 @@ func main() {
 			log.Println("Every minute job")
 		},
 		scheduler.CronRule{
-			Minute:  -1,
-			Hour:    -1,
-			Day:     -1,
-			Month:   -1,
-			Weekday: -1,
+			Minute:  scheduler.EveryMinute,
+			Hour:    scheduler.EveryHour,
+			Day:     scheduler.EveryDay,
+			Month:   scheduler.EveryMonth,
+			Weekday: scheduler.EveryWeekday,
 		},
 	)
 
