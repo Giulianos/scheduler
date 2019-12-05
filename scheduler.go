@@ -79,6 +79,14 @@ func (s *Scheduler) Stop() {
 	s.timer.Stop()
 }
 
+// RemoveJob removes a job from the list of scheduled
+// jobs
+func (s *Scheduler) RemoveJob(id ScheduledJobID) {
+	s.jobsMu.Lock()
+	delete(s.jobs, id)
+	s.jobsMu.Unlock()
+}
+
 func (s Scheduler) nextJobTime() time.Time {
 	return time.Now().Add(time.Minute).Truncate(time.Minute)
 }

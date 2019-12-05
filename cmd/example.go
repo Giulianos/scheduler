@@ -41,6 +41,23 @@ func main() {
 	)
 	log.Printf("Added second job with id %d", j2)
 
+	// Schedule an autoremovable job
+	var j3 scheduler.ScheduledJobID
+	j3 = s.Schedule(
+		func() {
+			log.Println("Autoremoveable job")
+			s.RemoveJob(j3)
+		},
+		scheduler.CronRule{
+			Minute:  scheduler.EveryMinute,
+			Hour:    scheduler.EveryHour,
+			Day:     scheduler.EveryDay,
+			Month:   scheduler.EveryMonth,
+			Weekday: scheduler.EveryWeekday,
+		},
+	)
+	log.Printf("Added third job with id %d", j3)
+
 	// Running scheduler
 	s.Run()
 	for {
