@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/Giulianos/scheduler"
 )
@@ -10,7 +11,7 @@ import (
 func StringToCronRule(rs string) (scheduler.CronRule, error) {
 	r := scheduler.CronRule{}
 	var weekday, month, day, hour, minute string
-	_, err := fmt.Sscanf(rs, "%s %s %s %s %s", weekday, month, day, hour, minute)
+	_, err := fmt.Sscanf(rs, "%s %s %s %s %s", &weekday, &month, &day, &hour, &minute)
 	if err != nil {
 		return scheduler.CronRule{}, err
 	}
@@ -23,7 +24,7 @@ func StringToCronRule(rs string) (scheduler.CronRule, error) {
 			return scheduler.CronRule{}, err
 		}
 
-		r.Weekday = v
+		r.Weekday = time.Weekday(v)
 	}
 
 	if month == "*" {
@@ -34,7 +35,7 @@ func StringToCronRule(rs string) (scheduler.CronRule, error) {
 			return scheduler.CronRule{}, err
 		}
 
-		r.Month = v
+		r.Month = time.Month(v)
 	}
 
 	if day == "*" {
@@ -45,7 +46,7 @@ func StringToCronRule(rs string) (scheduler.CronRule, error) {
 			return scheduler.CronRule{}, err
 		}
 
-		r.Day = v
+		r.Day = int(v)
 	}
 
 	if hour == "*" {
@@ -56,7 +57,7 @@ func StringToCronRule(rs string) (scheduler.CronRule, error) {
 			return scheduler.CronRule{}, err
 		}
 
-		r.Hour = v
+		r.Hour = int(v)
 	}
 
 	if minute == "*" {
@@ -67,7 +68,7 @@ func StringToCronRule(rs string) (scheduler.CronRule, error) {
 			return scheduler.CronRule{}, err
 		}
 
-		r.Minute = v
+		r.Minute = int(v)
 	}
 
 	return r, nil
