@@ -31,11 +31,11 @@ const (
 // CronRule is a rule
 // that defines when a job is executed
 type CronRule struct {
-	Minute  int
-	Hour    int
-	Day     int
-	Month   time.Month
 	Weekday time.Weekday
+	Month   time.Month
+	Day     int
+	Hour    int
+	Minute  int
 }
 
 // ScheduledJobID is an ID provided to each
